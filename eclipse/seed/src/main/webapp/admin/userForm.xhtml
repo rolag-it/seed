@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"	
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="#{userFormView.defaultTemplate}">
+<ui:param name="title" value="#{text['userFormView.title']}"/>
+  <ui:define name="pageContent"> 
+ <center>
+	<h:panelGroup id="pnlTitle" layout="block" styleClass="contentHeader">		
+  		<h:outputText value="#{text['userFormView.title']}" styleClass="contentHeader" />			
+  	</h:panelGroup>
+  			
+	<h:form id="frmUser" >
+	
+		<h:messages id="formMessages" globalOnly="true" styleClass="messageBox" infoClass="infoMsg" errorClass="errorMsg"/>
+		
+		<h:outputText styleClass="requiredLabel" style="width: 640px; text-align: right; margin-top: 5px" value="#{text['label.required']}"/>
+			
+		<rich:panel header="&#160;" styleClass="formInserimento" style="width: 640px; text-align: left">
+			<ul style="list-style: none">
+				<li style="margin: 4px 0">
+				    <h:outputLabel for="username" value="#{text['user.username']}*" styleClass="formLbl labeltext" />						
+					<h:inputText id="username" value="#{userFormView.user.username}" style="width: 180px" disabled="#{not userFormView.user.newEntity}" required="true"/> 
+					<h:message for="username" infoClass="infoMsg" errorClass="errorMsg"/>					
+				</li>
+
+				<li style="margin: 8px 0">
+				    <h:outputLabel for="firstName" value="#{text['user.firstName']}*" styleClass="formLbl labeltext" />
+					<h:inputText id="firstName" value="#{userFormView.user.firstName}" style="width: 180px" required="true" maxlength="128" /> 
+				    <h:message for="firstName" infoClass="infoMsg" errorClass="errorMsg"/>
+			    </li>
+				
+				<li style="margin: 8px 0">
+					<h:outputLabel for="lastName" value="#{text['user.lastName']}*" styleClass="formLbl labeltext" />
+					<h:inputText value="#{userFormView.user.lastName}" id="lastName" style="width: 180px" required="true" maxlength="128" /> 
+					<h:message for="lastName" infoClass="infoMsg" errorClass="errorMsg"/>
+				</li>
+				
+				<li style="margin: 8px 0">
+					<h:outputLabel for="email" value="#{text['user.email']}" styleClass="formLbl labeltext" />
+					<h:inputText value="#{userFormView.user.email}" style="width: 250px"  id="email" maxlength="256" />					
+				</li>			
+				
+				<li style="margin: 16px 0 0">
+					<h:outputText styleClass="formLbl labeltext" value="#{text['user.assignRoles']}*"/>				
+					<h:message for="userRoles" infoClass="infoMsg" errorClass="errorMsg"/>
+				</li>							
+				
+				<li>
+					<h:selectManyCheckbox value="#{userFormView.userRoles}" style="margin-left:162px" id="userRoles" required="true" layout="pageDirection">
+						<f:selectItems value="#{userFormView.availableRoles}" />					
+					</h:selectManyCheckbox>				
+				</li>
+				
+				<li style="margin: 16px 0 0">				
+					<h:outputText styleClass="formLbl labeltext" value="#{text['user.accountSetting']}"/>
+				</li>
+				<li>	
+					<h:selectBooleanCheckbox style="margin-left: 168px;" id="accountAbilitato" value="#{userFormView.user.enabled}"  />
+					<h:outputLabel for="accountAbilitato" value="#{text['user.enabled']}" />
+				</li>
+				
+			</ul>
+		</rich:panel>			
+		
+		<h:panelGroup layout="block" id="cmdPanel" style="width: 100%; text-align: center">				
+			<h:commandButton id="save" value="#{text['button.save']}" action="#{userFormView.save}" />
+			<h:commandButton id="cancel" value="#{text['button.cancel']}" action="#{userFormView.cancel}" immediate="true" />
+			<h:commandButton id="resetPwd" value="#{text['button.reset.pwd']}" 
+							 rendered="#{not userFormView.user.newEntity}" 
+							 action="#{userFormView.resetPassword}" 
+							 immediate="true"/>
+		</h:panelGroup>
+		
+	</h:form>
+
+ </center>
+</ui:define>
+</ui:composition>
+</html>

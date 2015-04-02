@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"	
+    xmlns:rich="http://richfaces.org/rich">
+
+<h:head>		
+        <title>#{text['login.title']}</title>
+	    <link href="/seed/styles/default.css" rel="stylesheet" type="text/css"/>	   
+</h:head>
+
+<h:body>
+	<h:panelGroup id="header" layout="block" >
+  		<h:graphicImage value="/images/logoHeader.png"/>      
+	</h:panelGroup>
+	<h:panelGroup id="content" layout="block">
+	   
+	   	<h:form id="frmLoginView" prependId="false">
+	   	<h:panelGroup id="pnlLoginError" layout="block" style="margin: 15% auto 0 auto; text-align: center">
+	   		<h:panelGroup rendered="#{param['error']}">
+	   			<h:graphicImage style="margin-right: 4px; vertical-align: middle;" value="/images/iconError.gif" /> 
+	   			<h:outputText id="loginError" styleClass="validationError" value="#{text['errors.password.mismatch']}" />
+	   		</h:panelGroup>
+	   	</h:panelGroup>	
+ 		<rich:panel header="#{text['login.heading']}" styleClass="formLogin">
+ 			   		
+ 			<br style="margin-bottom: 10px"/>
+            <h:outputLabel  styleClass="formLbl labeltext" for="j_username" value="#{text['login.username']}"/>   		     
+    		<h:inputText id="j_username" style="font-size: 12px; width: 128px" required="true"/>
+    			
+   		    <h:panelGroup layout="block" style="margin-left: 164px; height: 32px; text-align: left; clear: both">	     			  
+ 				<h:message for="j_username" infoClass="infoMsg" errorClass="errorMsg"/>
+            </h:panelGroup>  				
+       			
+            <h:outputLabel styleClass="formLbl labeltext " for="j_password" value="#{text['login.password']}"/>
+       	    <h:inputSecret id="j_password" style="font-size: 12px; width: 128px" required="true"/>
+       	    <h:panelGroup layout="block" style="margin-left: 164px; height: 32px; text-align: left; clear: both">    			     			 
+       	    	<h:message for="j_password" infoClass="infoMsg" errorClass="errorMsg"/>
+            </h:panelGroup>   	
+   		
+		</rich:panel>
+		 <h:panelGroup id="cmds" layout="block" style="text-align: center" >
+			<h:commandButton id="login" type="submit" style="margin-right:10px" action="#{loginView.login}" value="#{text['button.login']}" />			
+			<h:commandButton id="reset" type="reset" value="#{text['button.reset']}" />
+		 </h:panelGroup>
+	    </h:form>	   
+		
+	</h:panelGroup>
+
+	
+</h:body>
+</html>
