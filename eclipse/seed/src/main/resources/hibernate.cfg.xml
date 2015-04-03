@@ -11,6 +11,6 @@
         <mapping class="it.tids.seed.model.Session"/>
         <mapping class="it.tids.seed.model.Device"/>
         <mapping class="it.tids.seed.model.Measure"/>
-            
+        <mapping class="it.tids.seed.model.Performance"/>    
     </session-factory>
 </hibernate-configuration>

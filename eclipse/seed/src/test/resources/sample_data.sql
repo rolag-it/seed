@@ -5,4 +5,26 @@ INSERT INTO roles (id,description,name) VALUES (2,'Utente Sistema','ROLE_USER');
 INSERT INTO user_roles (user_id,role_id) VALUES (1,1);
 INSERT INTO user_roles (user_id,role_id) VALUES (2,2);
 INSERT INTO devices (device_id, device_code, device_lat, device_lon, device_loadfactor) VALUES (1,'RM0034',41.8565,12.4925,12.2400),(2,'RM1212',41.8455,12.4872,8.7500),(3,'RM1660',41.8584,12.4868,9.6400),(4,'RM2521',41.8563,12.4782,11.1200);
-INSERT INTO measures (measure_id, measure_date, measure_value, device_id) VALUES (1,'2015-03-20',4852,1),(2,'2015-03-20',8524,2),(3,'2015-03-20',3654,3),(4,'2015-03-20',8445,4),(5,'2015-03-21',5028,1),(6,'2015-03-21',8588,2),(7,'2015-03-21',3721,3),(8,'2015-03-21',8664,4),(9,'2015-03-22',5144,1),(10,'2015-03-22',8755,2),(11,'2015-03-22',3860,3),(12,'2015-03-22',8948,4),(13,'2015-03-23',5233,1),(14,'2015-03-23',8888,2),(15,'2015-03-23',4101,3),(16,'2015-03-23',9122,4);
+CREATE OR REPLACE 
+VIEW daily_measures AS
+    select 
+        DATE(measure_date) AS measure_date,
+        measures.device_id AS device_id,
+        max(measures.measure_value) AS measure_value
+    from
+        measures
+    group by measures.measure_date , measures.device_id;
+DROP TABLE IF EXISTS daily_perfomances;
+CREATE OR REPLACE
+VIEW daily_perfomances AS
+    select 
+    	concat(date_format(d2.measure_date,'%Y%m%d_'), d2.device_id) AS performance_id,
+        d2.measure_date AS performance_day,
+        d2.device_id AS device_id,
+        (d2.measure_value - d1.measure_value) AS performance_value,
+        ((d2.measure_value - d1.measure_value) * dev.device_loadfactor) AS performance_volume
+    from
+        ((daily_measures d1
+        join daily_measures d2 ON (((d1.device_id = d2.device_id)
+            and (d1.measure_date = (d2.measure_date - 1)))))
+        join devices dev ON ((d2.device_id = dev.device_id)));

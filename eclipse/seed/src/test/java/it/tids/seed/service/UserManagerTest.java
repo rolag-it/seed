@@ -10,6 +10,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.tids.seed.model.User;
 import it.tids.seed.service.UserManager;
@@ -17,12 +19,14 @@ import it.tids.seed.util.SecurityUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/applicationContext-test.xml"})
+@TransactionConfiguration(transactionManager = "transactionManager", defaultRollback = true)
 public class UserManagerTest extends BaseManagerTestCase {
 	
 	@Autowired
 	UserManager userManager;
 		
 	@Test
+	@Transactional
 	public void testSaveUser() {		
 		createSecureContext("admin");
 		
@@ -32,9 +36,7 @@ public class UserManagerTest extends BaseManagerTestCase {
 		user.setUsername("Test");
 		user.setPassword("Test");
 						
-		assertNull(user.getId());		
-		
-		hibernateTemplate.clear();
+		assertNull(user.getId());	
 		
 		userManager.saveUser(user);
 	    assertNotNull(user.getId());
@@ -43,7 +45,8 @@ public class UserManagerTest extends BaseManagerTestCase {
         destroySecureContext();
     }
 		
-	@Test	
+	@Test
+	@Transactional
 	public void testUsernameCostraint(){
 		createSecureContext("admin");
 		
@@ -66,6 +69,7 @@ public class UserManagerTest extends BaseManagerTestCase {
 	}
 	
 	@Test
+	@Transactional
 	public void testGetUserAndResetPassword(){
 		createSecureContext("admin");
 		

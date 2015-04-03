@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import it.tids.seed.model.Device;
+import it.tids.seed.model.Performance;
 import it.tids.seed.service.DeviceManager;
 
 @ManagedBean
@@ -45,6 +46,11 @@ public class DevicesListView extends BaseView {
 	public void showList(){		
 		devices =  deviceManager.getAll();
 		rows = devices.size();
+		
+		for (Device device: devices){
+			List<Performance> performances = deviceManager.getDailyPerformances(device.getId());
+			device.getPerformances().addAll(performances);
+		}
 	}
 	
 	public Device getCenterDevice() {

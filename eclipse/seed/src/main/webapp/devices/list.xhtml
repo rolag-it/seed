@@ -63,13 +63,24 @@
 	<h:form id="frmDevices">
 		<h:messages id="formMessages" globalOnly="true" styleClass="messageBox" infoClass="infoMsg" errorClass="errorMsg"/>
 		
-		<div id="map-canvas" style="margin-top: 16px; width: 512px; height: 320px; margin: 0 auto"></div>	
-		
-		<h:panelGroup id="pnlDati" layout="block" style="clear: both; margin-top: 16px; width: 100%; position: relative"
-					  rendered="#{not empty devicesListView.devices}">
+		<h:panelGroup id="pnlGrafico" layout="block" style="width: 90%; clear: both; margin: 16px auto; position: relative; text-align:center">			
+		<rich:chart title="Volumi per data">
+            <a4j:repeat value="#{devicesListView.devices}" var="device" >
+                <rich:chartSeries label="#{device.code}" type="line">
+                    <a4j:repeat value="#{device.performances}" var="perfomance">
+                        <rich:chartPoint x="#{perfomance.dayLabel}" y="#{perfomance.volume}" />
+                    </a4j:repeat>
+                </rich:chartSeries>
+            </a4j:repeat>
+            <rich:chartXAxis  label="Giorno" max="10"/>
+            <rich:chartYAxis label="Volume (g)"/>
+        </rich:chart> 
+		</h:panelGroup>
+		<h:panelGroup id="pnlDati" layout="block" style="width: 90%; clear: both; margin: 16px auto; position: relative; text-align:center"
+					  rendered="#{not empty devicesListView.devices}">		
 			
 			<rich:dataTable id="tblEventi" value="#{devicesListView.devices}" var="device" 
-							styleClass="clickableTable" style="margin: 0 auto" cellpadding="8px"
+							styleClass="clickableTable" style="display:inline-block;vertical-align:top" cellpadding="8px"
 							rowClasses="standardTableRow1, standardTableRow2"
 							onrowclick="highlightMarker(#{device.latitude},#{device.longitude})">
 				
@@ -107,7 +118,7 @@
 				
 											
 			</rich:dataTable>
-			
+			<div id="map-canvas" style="display:inline-block; width: 512px; height: 320px; margin-left:64px"></div>
 		</h:panelGroup>
 	</h:form> 		
   </h:panelGroup>  

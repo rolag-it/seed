@@ -1,6 +1,8 @@
 package it.tids.seed.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -30,8 +32,11 @@ public class Device implements Serializable {
 	@Column(name = "device_loadfactor")
 	private Float loadFactor;
 	
-
+	@Transient
+	private final transient List<Performance> performances;	
+	
 	public Device() {
+		performances = new LinkedList<>();
 	}
 
 	public Integer getId() {
@@ -72,6 +77,10 @@ public class Device implements Serializable {
 
 	public void setLongitude(Float longitude) {
 		this.longitude = longitude;
+	}
+	
+	public List<Performance> getPerformances() {
+		return performances;
 	}
 
 	@Override
