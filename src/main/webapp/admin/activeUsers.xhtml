@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+
+<ui:composition template="#{activeUsersView.defaultTemplate}">
+<ui:param name="title" value="#{text['activeUsers.title']}"/>
+  <ui:define name="pageContent">
+  	
+  <h:panelGroup id="pnlTitle" layout="block" styleClass="contentHeader">		
+  	<h:outputText value="#{text['activeUsers.title']}" styleClass="contentHeader" />			
+  </h:panelGroup>
+
+  <h:form id="activeUsersForm">			
+	  <h:panelGroup id="pnlUsrsCount" layout="block" style="width: 720px; background-color: #E3E6ED; text-align: left; margin: 16px auto 0 auto">			
+	  	<h:outputFormat value="#{text['activeUsers.anonymous.count']}" styleClass="labeltext">
+	    	<f:param value="#{activeUsersView.anonymousCount}"/>
+	    </h:outputFormat>
+	    <br/>
+	  	<h:outputFormat value="#{text['activeUsers.trusted.count']}" styleClass="labeltext">
+	    	<f:param value="#{activeUsersView.trustedCount}"/>
+	    </h:outputFormat>
+	  </h:panelGroup>		
+						
+	  <table style="width: 720px; background-color: #E3E6ED; border-spacing: 0px; border-collapse: collapse; margin: 0 auto">
+		<tr>
+		<td style="width: 33%; text-align: left;">
+			<h:outputFormat styleClass="labeltext" value="#{text['activeUsers.users.count']}" >
+					<f:param value="#{activeUsersView.rowsCount}"/>
+			</h:outputFormat>			 
+		</td>
+		<td style="width: 34%; text-align: center;">
+        	 <rich:dataScroller id="topScroller" for="activeUsers" maxPages="10" 
+        						renderIfSinglePage="false"
+        						reRender="topPageSelection"        						
+        	 					page="#{activeUsersView.scrollerIndex}" style="display: inline;">        	    	
+             		<ui:include src="/layout/scrollerdecor.xhtml" />
+              </rich:dataScroller>	
+				
+		</td>
+		<td style="width: 33%; text-align: right;">
+		  <h:panelGroup rendered="#{activeUsersView.rowsCount gt 30}">
+            <h:outputText styleClass="testo10Bold" value="#{text['label.goPage']}" />
+            <h:inputText value="#{activeUsersView.scrollerIndex}" id="topPageSelection" size="1"/>
+            <a4j:commandButton value="#{text['button.go']}" reRender="topScroller,activeUsers"/>
+		  </h:panelGroup>
+		</td>
+		</tr>
+	  </table>
+	
+	  <rich:dataTable id="activeUsers" styleClass="clickableTable" onrowclick="editUser('#{user.username}')" 
+	  				  style="width: 720px; margin: 0 auto" var="user" cellpadding="5px" value="#{activeUsersView.listUsers}" rows="30" width="75%">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{text['user.username']}" />
+			</f:facet>					
+			<h:outputText value="#{user.username}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{text['user.fullName']}" />
+			</f:facet>
+			<h:outputText value="#{user.fullName}" />
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{text['user.role']}" />
+			</f:facet>
+			<h:outputText value="#{user.rolesDescription}" />
+		</h:column>				
+	</rich:dataTable>
+	<a4j:jsFunction name="editUser" immediate="true" action="userForm?faces-redirect=true">
+		<a4j:param name="userId" assignTo="#{flash.usrname}"/>
+	</a4j:jsFunction>
+	<h:panelGroup id="pnlCommands" layout="block" style="width: 100%; text-align: center; margin: 16px auto">			
+		<h:commandButton value="#{text['button.update']}" action="activeUsers"/>
+	</h:panelGroup>
+  </h:form>
+		
+  </ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:seed="http://www.tids.it/seed"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:rich="http://richfaces.org/rich">
+  <ui:composition>
+
+	<h:graphicImage id="imgLogo" value="/images/logoHeader.png" />
+	
+	<h:panelGroup id="pnlUseInfo" layout="block" >
+		<seed:userCheckIn/>
+		<h:outputLink value="/seed/j_spring_security_logout" rendered="#{rich:isUserInRole('ROLE_USER')}">
+			<h:outputText value="#{text['menu.logout']}" />
+		</h:outputLink>
+	</h:panelGroup>
+
+</ui:composition>
+</html>
