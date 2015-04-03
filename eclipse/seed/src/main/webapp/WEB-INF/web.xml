@@ -95,10 +95,8 @@
     </listener>
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>    
-    <listener>
-        <listener-class>it.tids.seed.webapp.listener.StartupListener</listener-class>
-    </listener>
+    </listener>   
+  
     <listener>
         <listener-class>it.tids.seed.webapp.listener.UserCounterListener</listener-class>
     </listener>
